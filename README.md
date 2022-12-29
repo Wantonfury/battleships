@@ -2,7 +2,7 @@
 
 ### A game created to practice JavaScript and TDD.
 
-### Live demo: 
+### Live demo: https://wantonfury.github.io/battleships/
 
 ### Built with:
 - HTML
