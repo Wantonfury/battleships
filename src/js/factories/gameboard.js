@@ -4,7 +4,7 @@ class Gameboard {
     #boardSize = 10;
     #board;
     
-    #shipTypes = {
+    static shipTypes = {
         carrier: 5,
         battleship: 4,
         destroyer: 3,
@@ -12,12 +12,14 @@ class Gameboard {
         patrolBoat: 2
     }
     
-    #tileTypes = {
+    static tileTypes = {
         empty: 0,
         missed: 1,
         ship: 2,
         hit: 3
     }
+    
+    static tileColors = ['white', 'grey', 'white', 'red'];
     
     #ships = [];
     
@@ -29,17 +31,21 @@ class Gameboard {
         
         for (let i = 0; i < this.#boardSize; ++i) {
             for (let j = 0; j < this.#boardSize; ++j) {
-                this.#board[i][j] = this.#tileTypes.empty;
+                this.#board[i][j] = Gameboard.tileTypes.empty;
             }
         }
     }
     
-    get shipTypes() {
-        return this.#shipTypes;
+    get tileColors() {
+        return Gameboard.tileColors;
     }
     
     get tileTypes() {
-        return this.#tileTypes;
+        return Gameboard.tileTypes;
+    }
+    
+    get shipTypes() {
+        return Gameboard.shipTypes;
     }
     
     get board() {
@@ -61,7 +67,7 @@ class Gameboard {
             
             const j = column;
             for (let i = row; i < length + row; ++i) {
-                if (this.#board[i][j] === this.#tileTypes.ship) fits = false;
+                if (this.#board[i][j] === Gameboard.tileTypes.ship) fits = false;
             }
             return fits;
         } else if (!isVertical && this.#fitsOnBoard(length, column)) {
@@ -69,7 +75,7 @@ class Gameboard {
             
             const i = row;
             for (let j = column; j < length + column; ++j) {
-                if (this.#board[i][j] === this.#tileTypes.ship) fits = false;
+                if (this.#board[i][j] === Gameboard.tileTypes.ship) fits = false;
             }
             return fits;
         }
@@ -85,11 +91,11 @@ class Gameboard {
         if (isVertical) {
             const j = column;
             for (let i = row; i < length + row; ++i)
-                this.#board[i][j] = this.#tileTypes.ship;
+                this.#board[i][j] = Gameboard.tileTypes.ship;
         } else {
             const i = row;
             for (let j = column; j < length + column; ++j)
-                this.#board[i][j] = this.#tileTypes.ship;
+                this.#board[i][j] = Gameboard.tileTypes.ship;
         }
         
         return true;
@@ -100,7 +106,7 @@ class Gameboard {
         
         for (let i = 0; i < this.#boardSize; ++i) {
             for (let j = 0; j < this.#boardSize; ++j) {
-                if (this.#board[i][j] === this.#tileTypes.ship) sunk = false;
+                if (this.#board[i][j] === Gameboard.tileTypes.ship) sunk = false;
             }
         }
         
@@ -108,13 +114,23 @@ class Gameboard {
     }
     
     receiveAttack(row, column) {
-        if (this.#board[row][column] === this.#tileTypes.ship) {
-            this.#board[row][column] = this.#tileTypes.hit;
+        if (this.#board[row][column] === Gameboard.tileTypes.ship) {
+            this.#board[row][column] = Gameboard.tileTypes.hit;
             return true;
         }
         
-        this.#board[row][column] = this.#tileTypes.missed;
+        this.#board[row][column] = Gameboard.tileTypes.missed;
         return false;
+    }
+    
+    reset() {
+        this.#ships = [];
+        
+        for (let i = 0; i < this.#boardSize; ++i) {
+            for (let j = 0; j < this.#boardSize; ++j) {
+                this.#board[i][j] = Gameboard.tileTypes.empty;
+            }
+        }
     }
     
     print() {

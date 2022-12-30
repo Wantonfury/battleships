@@ -1,4 +1,14 @@
 class Player {
+    #active = false;
+    
+    get active() {
+        return this.#active;
+    }
+    
+    set active(value) {
+        this.#active = value;
+    }
+    
     attack(gameboard, targetX, targetY) {
         if (this.alreadyAttacked(gameboard, targetX, targetY)) return false;
         
